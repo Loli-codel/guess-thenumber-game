@@ -1,0 +1,44 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background :linear-gradient(to right, #a8c8f0, #ddf866);
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: black;
+    font-weight: bold;
+    font-size:larger;
+    display: flex;
+    background-image: url('images\ and\ sounds/numberbackground.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 50px;
+    box-shadow: 10px 0 20px 10px;
+}
+
+h1{
+    color:  #81b6f7;
+    text-shadow: 3px 2px 4px ;
+}
+
+button{
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    font-size: 19px;
+    font-weight: bold;
+    border-color: #6ba6ee;
+    border-style: ridge;
+    cursor: pointer;
+}
+
+button:hover{
+    background: #b7d4fa;
+}

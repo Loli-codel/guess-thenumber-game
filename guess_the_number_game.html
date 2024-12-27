@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="guess_the_number_game.css">
+    <title> Guess The Number Game </title> 
+</head>
+
+<body>
+    <div class="container">
+<h1>Guess The Number Game</h1>
+<h2>Round <span id="round">1</span></h2>
+<p>Guess a number between 30 and <span id="max-number">130</span>:🤓</p>
+<label> Guess me:</label>
+<input type="number" id="guess" min="30" max="130">
+<button onclick="checkGuess()">Done</button>
+<br/>
+<br/>
+<p id="results"></p>
+<p id="attempts"></p>
+<button id="start-over-button" onclick="resetGame()">Start Over</button>
+
+</div>
+
+<canvas id="confettiCanvas"></canvas>
+
+<script>
+
+const canvas = document.getElementById("confettiCanvas");
+const ctx = canvas.getContext("2d");
+let confettiParticles = [];
+let maxNumber = 130;
+let minNumber = 30;
+let maxGuesses = 10;
+let CurrentRound = 1;
+let attempts = 0;
+let randomNumber = generateRandomNumber(minNumber, maxNumber);
+let confettiAnimation;
+
+
+function generateRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+    
+    function checkGuess() {
+        const userGuess = parseInt(document.getElementById('guess').value);
+        attempts++;
+        let result='';
+
+        if ( isNaN(userGuess) || userGuess < minNumber || userGuess > maxNumber){
+            result = "Please make sure the number you put in the box is between the range that is given above. Thanks. 🤓 ";
+        }
+        else if (userGuess === randomNumber ){
+            result = +randomNumber+" is the right answer.🎉Congratulations!🎉🏆 The number you guessed in " +attempts+ " attempts is right👏 Now try the next round.";
+            playCelebrationSound();
+            startConfetti();
+            setTimeout(stopConfetti, 4000);
+            nextRound();
+        }
+        
+        else {
+            result = `🤔 Hmm... it is too ${userGuess > randomNumber ? 'high' : 'low'}. Try again!`;
+        }
+
+        if (attempts >= maxGuesses) {
+            result = "The game is over😞. Unfortunately, you could not guess the number in " +attempts+ " attempts. The number was " +randomNumber+ ".";
+            playGameOverSound();
+            setTimeout(resetGame, 5000);
+            document.getElementById('results').innerText = result;
+            return;
+        }
+        document.getElementById('results').innerText = result;
+        document.getElementById('attempts').innerText = "Attempts: " +attempts+ "/" +maxGuesses+ "."; 
+        
+    }
+
+    function nextRound() {
+        CurrentRound ++;
+        maxNumber += 60;
+        maxGuesses --;
+        attempts = 0;
+        randomNumber = generateRandomNumber(minNumber, maxNumber);
+        document.getElementById('max-number').innerText = maxNumber;
+        document.getElementById('round').innerText = CurrentRound;
+        document.getElementById('guess').value = '';
+        document.getElementById('guess').setAttribute('min', minNumber);
+        document.getElementById('guess').setAttribute('max', maxNumber);
+        document.getElementById('attempts').innerText = "Attempts:" +attempts+ "/" +maxGuesses+ ".";
+    }
+
+    function resetGame() {
+        CurrentRound = 1;
+        maxNumber = 130;
+        maxGuesses = 10;
+        attempts = 0;
+        randomNumber = generateRandomNumber(minNumber, maxNumber);
+        document.getElementById('max-number').innerText = maxNumber;
+        document.getElementById('round').innerText = CurrentRound;
+        document.getElementById('guess').value = '';
+        document.getElementById('guess').setAttribute('min', minNumber);
+        document.getElementById('guess').setAttribute('max', maxNumber);
+        document.getElementById('results').innerText = '';
+        document.getElementById('attempts').innerText = "Attempts:" +attempts+ "/" +maxGuesses+ ".";
+
+    }
+
+    function startConfetti() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    confettiParticles = [];
+
+    for (let i = 0; i < 150; i++) {
+        confettiParticles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            dx: Math.random() * 6 - 3,
+            dy: Math.random() * 6 + 2,
+            size: Math.random() * 8 + 4,
+            color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+            rotation: Math.random()* 360,
+            rotationSpeed: Math.random()* 5,
+        });
+    }
+
+    confettiAnimation = requestAnimationFrame(updateConfetti);
+}
+
+function updateConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let particle of confettiParticles) {
+        ctx.save();
+        ctx.translate(particle.x, particle.y);
+        ctx.rotate((particle.rotation *Math.PI) / 180);
+        ctx.fillStyle = particle.color;
+        ctx.fillRect(-particle.size / 2, -particle.size / 2, particle.size, particle.size);
+
+        ctx.restore();
+
+        particle.x += particle.dx;
+        particle.y += particle.dy;
+
+        if (particle.y > canvas.height) {
+            particle.y = -particle.size;
+            particle.x = Math.random()* canvas.width;
+        }
+    }
+
+    confettiAnimation = requestAnimationFrame(updateConfetti);
+}
+
+function stopConfetti() {
+    confettiParticles = [];
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    cancelAnimationFrame(confettiAnimation);
+}
+
+function playCelebrationSound(){
+    const audio = new Audio("images and sounds/winningsound.mp3");
+    audio.play();
+}
+
+function playGameOverSound(){
+    const audio = new Audio("images and sounds/gameoversound.mp3");
+    audio.play();
+}
+
+</script>
+
+</body>
+</html>

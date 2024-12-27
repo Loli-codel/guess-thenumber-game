@@ -1,0 +1,77 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background :linear-gradient(to right, #a8c8f0, #ddf866);
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: black;
+    font-weight: bold;
+    font-size:larger;
+    display: flex;
+    background-image: url('images\ and\ sounds/numberbackground.jpg');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 50px;
+    box-shadow: 10px 0 20px 10px;
+}
+h1{
+    color:  #81b6f7;
+    text-shadow: 3px 2px 4px ;
+
+}
+input[type="number"]{
+    padding: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    border-radius: 10px;
+    text-align: center;
+    border-color: #6ba6ee;
+    border-style:ridge;
+    cursor: pointer;
+}
+
+input:hover{
+    background: #b7d4fa;
+}
+
+button{
+    border-radius: 10px;
+    padding: 8px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: bold;
+    border-color: #6ba6ee;
+    width: 100px;
+    border-style: ridge;
+    cursor: pointer;
+}
+
+#start-over-button {
+    width: 150px;
+}
+button:hover{
+    background: #c0d8f8;
+}
+
+#results {
+    font-size: large;
+    color:  #81b6f7;
+    font-weight: bolder;
+}
+
+#confettiCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
